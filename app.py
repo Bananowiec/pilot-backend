@@ -4,6 +4,9 @@ import os
 
 app = Flask(__name__)
 
+@app.route("/healthz")
+def healthz():
+    return "OK", 200
 # Mapowanie klawiszy na komendy ADB (możesz zmienić według potrzeb)
 mapa = {
     '1': '19',  # góra
