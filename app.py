@@ -17,6 +17,9 @@ mapa = {
     '6': '24',  # volume up
     '7': '25',  # volume down
 }
+@app.route("/")
+def index():
+    return "Backend działa!", 200
 
 @app.route('/klik')
 def klik():
