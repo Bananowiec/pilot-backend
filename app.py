@@ -26,7 +26,7 @@ def klik():
     klawisz = request.args.get('klawisz')
     if klawisz in mapa:
         # Wywołanie ADB
-        subprocess.run(['adb', 'shell', 'input', 'keyevent', mapa[klawisz]])
+        print(f"Wysłano symulowane polecenie: adb shell input keyevent {mapa[klawisz]}")
         return f"Przycisk {klawisz} odebrany!", 200
     return "Nieznany klawisz", 400
 
