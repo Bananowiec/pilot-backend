@@ -1,36 +1,32 @@
+# ======== 1. BACKEND (Render.com) ========
+# Kod pliku: main.py (do wrzucenia na GitHub i połączenia z Render)
+
 from flask import Flask, request
-import subprocess
 import os
 
 app = Flask(__name__)
 
+# Prosty bufor ostatniego kliknięcia
+ostatni_klawisz = ""
+
+@app.route("/klik")
+def klik():
+    global ostatni_klawisz
+    klawisz = request.args.get("klawisz")
+    if klawisz:
+        ostatni_klawisz = klawisz
+        return "OK", 200
+    return "Brak klawisza", 400
+
+@app.route("/get")
+def get():
+    global ostatni_klawisz
+    return ostatni_klawisz, 200
+
 @app.route("/healthz")
 def healthz():
     return "OK", 200
-# Mapowanie klawiszy na komendy ADB (możesz zmienić według potrzeb)
-mapa = {
-    '1': '19',  # góra
-    '2': '20',  # dół
-    '3': '21',  # lewo
-    '4': '22',  # prawo
-    '5': '23',  # OK
-    '6': '24',  # volume up
-    '7': '25',  # volume down
-}
-@app.route("/")
-def index():
-    return "Backend działa!", 200
 
-@app.route('/klik')
-def klik():
-    klawisz = request.args.get('klawisz')
-    if klawisz in mapa:
-        # Wywołanie ADB
-        print(f"Wysłano symulowane polecenie: adb shell input keyevent {mapa[klawisz]}")
-        return f"Przycisk {klawisz} odebrany!", 200
-    return "Nieznany klawisz", 400
-
-if __name__ == "__main__":
-    # Render.com ustawia PORT w zmiennej środowiskowej
-    port = int(os.environ.get('PORT', 5000))
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
